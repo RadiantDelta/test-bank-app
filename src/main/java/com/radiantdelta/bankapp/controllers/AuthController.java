@@ -1,6 +1,7 @@
 package com.radiantdelta.bankapp.controllers;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import com.radiantdelta.bankapp.dtos.SignUpDto;
 import com.radiantdelta.bankapp.entities.User;
 import com.radiantdelta.bankapp.services.AuthService;
 
+@Slf4j
 @Validated
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -33,6 +35,7 @@ public class AuthController {
   @PostMapping("/signup")
   public ResponseEntity<?> signUp(@RequestBody @Valid SignUpDto data) {
     service.signUp(data);
+    log.info("Signup happened");
     return ResponseEntity.status(HttpStatus.CREATED).build();
 
   }
@@ -47,7 +50,7 @@ public class AuthController {
     HttpHeaders headers = new HttpHeaders();
     headers.add("Authorization", "Bearer " +accessToken);
 
-
+    log.info("Signined user with login: " + data.login());
     return ResponseEntity.ok().headers(headers).build();
   }
 

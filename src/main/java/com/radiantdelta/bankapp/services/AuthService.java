@@ -37,24 +37,26 @@ public class AuthService implements UserDetailsService {
 
   public UserDetails signUp(SignUpDto data) throws InvalidJwtException {
 
-    log.info(data.getEmailList().get(0).getEmail());
-    log.info(data.getLogin());
-    log.info(data.getPhoneList().get(0).getPhone());
+
 
     if (repository.findByLogin(data.getLogin()) != null) {
+      log.info("AuthService:  Username already exists");
       throw new InvalidJwtException("Username already exists");
     }
 
 
     if (emailRepository.findByEmailstr(data.getEmailList().get(0).getEmail()) != null) {
+      log.info("AuthService:  Email already exists");
       throw new InvalidJwtException("Email already exists");
     }
 
     if (phoneRepository.findByPhone(data.getPhoneList().get(0).getPhone()) != null) {
+      log.info("AuthService:  Phone already exists");
       throw new InvalidJwtException("Phone already exists");
     }
 
     if (data.getAmount() < 0) {
+      log.info("AuthService:  balance is negative");
       throw new InvalidJwtException("Negative amount ");
     }
 
@@ -64,7 +66,7 @@ public class AuthService implements UserDetailsService {
 
 
     Email em = new Email(newUser, data.getEmailList().get(0).getEmail());
-    log.info(data.getEmailList().get(0).getEmail());
+
     newUser.addEmailToList(em);
 
     Phone ph = new Phone(newUser, data.getPhoneList().get(0).getPhone());

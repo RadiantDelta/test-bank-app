@@ -36,15 +36,13 @@ public class User implements UserDetails {
   private String password;
 
 
-//  @JsonManagedReference
+
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
-  //@JoinColumn(name = "phone_id")
   private List<Phone> phoneList;
 
 
- // @JsonManagedReference
+
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
-  //@JoinColumn(name = "email_id")
   private List<Email> emailList;
 
   @Min(value=0, message = "amount should not be less 0")

@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
 public interface EmailRepository extends JpaRepository<Email, Long> {
-   // Email findByEmail(String email);
     Email findByEmailstr(String emailstr);
 
 

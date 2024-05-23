@@ -63,15 +63,21 @@ public class UserController {
       var login = tokenService.validateToken(bearerToken.replace("Bearer ", ""));
       var user = (User) userRepository.findByLogin(login);
       if(user.getAmount() < money) {
+        log.info("/transfer  " + user.getPhoneList().get(0).getPhone() + " has not enough money on account");
         throw new NotEnougnAmountException(user.getPhoneList().get(0).getPhone() + " has not enough money on account");
       }
       else {
         user.setAmount(user.getAmount()-money);
         User targetUser = userRepository.findByPhoneNotPage(phone);
-        if(targetUser == null) { throw new NoTargetUserException("target user does not exist");}
+        if(targetUser == null) {
+          log.info("/transfer  target user does not exist");
+          throw new NoTargetUserException("target user does not exist");
+        }
         targetUser.setAmount(targetUser.getAmount()+money);
         userRepository.saveAndFlush(user);
         userRepository.saveAndFlush(targetUser);
+        log.info("/transfer  Money: " +money +" from user with phone " + user.getPhoneList().get(0).getPhone() +
+                " transferred to user with phone: " + targetUser.getPhoneList().get(0).getPhone());
       }
     }
 
@@ -123,13 +129,13 @@ public class UserController {
       }
 
       users = pageTuts.getContent();
-
+      log.info("/users:  users list obtained");
       // HIDING USERS FIELDS
       List<UserDTO> usersDTO = new ArrayList<UserDTO>();
       usersDTO = users.stream().
               map( x -> UserDTO.from(x)).
               collect(Collectors.toList());
-
+      log.info("/users:  users list -> usersDTO list");
       Map<String, Object> response = new HashMap<>();
       response.put("users", usersDTO);
       response.put("currentPage", pageTuts.getNumber());
@@ -156,18 +162,19 @@ public class UserController {
       List<String> strEmailsList =emailsList.stream().map(Email::getEmail).collect(Collectors.toList());
 
       if( strEmailsList.contains(newEmail) ) {
+        log.info("/add-email  " + newEmail + " is email of current user");
        throw new RepeatedDataException(newEmail + " is email of current user");
      }
      else if(emailRepository.findByEmailstr(newEmail) != null) {
+       log.info("/add-email  The email: " + newEmail + " belongs to other user");
          throw new RepeatedDataException("The email: " + newEmail + " belongs to other user");
        }
        else{
          Email em = new Email(user, newEmail);
-        // emailRepository.saveAndFlush(em);
 
-        //    userRepository.delete(user);
             user.addEmailToList(em);
             userRepository.saveAndFlush(user);
+            log.info("/add-email  " + newEmail + " added");
        }
     }
 
@@ -181,24 +188,24 @@ public class UserController {
     if (bearerToken != null) {
       var login = tokenService.validateToken(bearerToken.replace("Bearer ", ""));
       var user = (User) userRepository.findByLogin(login);
-      log.info("/////////////////////////////////////////////////// "+ user.getLogin() + "   " + user.getPassword() + " " + user.getPhoneList().isEmpty() );
-      log.info(Arrays.toString(user.getPhoneList().toArray())) ;
+
       List<Phone> phonesList = user.getPhoneList();
       List<String> strPhonesList =phonesList.stream().map(Phone::getPhone).collect(Collectors.toList());
-      log.info(Arrays.toString(strPhonesList.toArray())) ;
+
       if( strPhonesList.contains(newPhone) ) {
+        log.info("/add-phone  " + newPhone + " is phone of current user");
         throw new RepeatedDataException(newPhone + " is phone of current user");
       }
       else if(phoneRepository.findByPhone(newPhone) != null) {
+        log.info("/add-phone  The email: " + newPhone + " belongs to other user");
         throw new RepeatedDataException("The phone: " + newPhone + " belongs to other user");
       }
       else{
         Phone ph = new Phone(user, newPhone);
-        // emailRepository.saveAndFlush(em);
 
-        //    userRepository.delete(user);
         user.addPhoneToList(ph);
         userRepository.saveAndFlush(user);
+        log.info("/add-phone  " + newPhone + " added");
       }
     }
 
@@ -218,15 +225,18 @@ public class UserController {
       List<Phone> phonesList = user.getPhoneList();
       List<String> strPhonesList =phonesList.stream().map(Phone::getPhone).collect(Collectors.toList());
       if(strPhonesList.size() == 1) {
+        log.info("DELETE-phone  The phone: " + phone + " is the only phone of current user");
         throw new LastDataException("The phone: " + phone + " is the only phone of current user");
       }
       else if( strPhonesList.contains(phone) ) {
         Phone oph = phoneRepository.findByPhone(phone);
-        log.info("Deleting id is " + oph.getId());
+
         phoneRepository.delete(oph.getId());
         phoneRepository.flush();
+        log.info("DELETE-phone " + phone + " is deleted");
       }
       else  {
+        log.info("DELETE-phone  The phone: " + phone + " does not belong to current user");
         throw new NoExistDataException("The phone: " + phone + " does not belong to current user");
       }
 
@@ -247,17 +257,18 @@ public class UserController {
       List<Email> emailsList = user.getEmailList();
       List<String> strEmailsList =emailsList.stream().map(Email::getEmail).collect(Collectors.toList());
       if(strEmailsList.size() == 1) {
+        log.info("DELETE-email  The email: " + email + " is the only email of current user");
         throw new LastDataException("The email: " + email + " is the only email of current user");
       }
       else if( strEmailsList.contains(email) ) {
         Email oem = emailRepository.findByEmailstr(email);
-        // emailRepository.saveAndFlush(em);
-        //    userRepository.delete(user);
-        log.info("Deleting id is " + oem.getId());
+
         emailRepository.delete(oem.getId());
         emailRepository.flush();
+        log.info("DELETE-email " + email + " is deleted");
       }
       else  {
+        log.info("DELETE-email The email: " + email + " does not belong to current user");
         throw new NoExistDataException("The email: " + email + " does not belong to current user");
       }
 
@@ -274,33 +285,31 @@ public class UserController {
     if (bearerToken != null) {
       var login = tokenService.validateToken(bearerToken.replace("Bearer ", ""));
       var user = (User) userRepository.findByLogin(login);
-      log.info("/////////////////////////////////////////////////// "+ user.getLogin() + "   " + user.getPassword() + " " + user.getPhoneList().isEmpty() );
-      log.info(Arrays.toString(user.getPhoneList().toArray())) ;
+
       List<Phone> phonesList = user.getPhoneList();
       List<String> strPhonesList =phonesList.stream().map(Phone::getPhone).collect(Collectors.toList());
-      log.info(Arrays.toString(strPhonesList.toArray())) ;
+
       if( strPhonesList.contains(newAndOldPhone.getNewVal()) ) {
+        log.info("CHANGE-phone " + newAndOldPhone.getNewVal() + " is phone of current user");
         throw new RepeatedDataException(newAndOldPhone.getNewVal() + " is phone of current user");
       }
       else if(phoneRepository.findByPhone(newAndOldPhone.getNewVal()) != null) {
+        log.info("CHANGE-phone  The phone: " + newAndOldPhone.getNewVal() + " belongs to other user");
         throw new RepeatedDataException("The phone: " + newAndOldPhone.getNewVal() + " belongs to other user");
       }
       else{
         if(strPhonesList.contains(newAndOldPhone.getOldVal())){
-       // Phone oph = new Phone(user, newAndOldPhone.getOldVal());
-        // emailRepository.saveAndFlush(em);
+
           Phone ph =new Phone(user, newAndOldPhone.getNewVal());
 
-        //    userRepository.delete(user);
           Phone oph = phoneRepository.findByPhone(newAndOldPhone.getOldVal());
-          log.info("oph is "+oph.getId());
           phoneRepository.delete(oph.getId());
           phoneRepository.flush();
           phoneRepository.saveAndFlush(ph);
-       // user.addPhoneToList(ph);
-       // userRepository.saveAndFlush(user);
+          log.info("CHANGE-phone  phone changed");
         }
         else{
+          log.info("CHANGE-phone  The phone: " + newAndOldPhone.getOldVal() + " does not belong to current user");
           throw new NoExistDataException("The phone: " + newAndOldPhone.getOldVal() + " does not belong to current user");
         }
       }
@@ -317,15 +326,16 @@ public class UserController {
     if (bearerToken != null) {
       var login = tokenService.validateToken(bearerToken.replace("Bearer ", ""));
       var user = (User) userRepository.findByLogin(login);
-     // log.info("/////////////////////////////////////////////////// "+ user.getLogin() + "   " + user.getPassword() + " " + user.getPhoneList().isEmpty() );
-     // log.info(Arrays.toString(user.getPhoneList().toArray())) ;
+
       List<Email> emailsList = user.getEmailList();
       List<String> strEmailsList =emailsList.stream().map(Email::getEmail).collect(Collectors.toList());
-     // log.info(Arrays.toString(strEmailsList.toArray())) ;
+
       if( strEmailsList.contains(newAndOldEmail.getNewVal()) ) {
+        log.info("CHANGE-email " + newAndOldEmail.getNewVal() + " is email of current user");
         throw new RepeatedDataException(newAndOldEmail.getNewVal() + " is email of current user");
       }
       else if(emailRepository.findByEmailstr(newAndOldEmail.getNewVal()) != null) {
+        log.info("CHANGE-email  The email: " + newAndOldEmail.getNewVal() + " belongs to other user");
         throw new RepeatedDataException("The email: " + newAndOldEmail.getNewVal() + " belongs to other user");
       }
       else{
@@ -334,14 +344,14 @@ public class UserController {
           Email em =new Email(user, newAndOldEmail.getNewVal());
 
           Email oem = emailRepository.findByEmailstr(newAndOldEmail.getOldVal());
-          log.info("oem is "+oem.getId());
+
           emailRepository.delete(oem.getId());
           emailRepository.flush();
           emailRepository.saveAndFlush(em);
-          // user.addPhoneToList(ph);
-          // userRepository.saveAndFlush(user);
+          log.info("CHANGE-email email changed");
         }
         else{
+          log.info("CHANGE-email The email: " + newAndOldEmail.getOldVal() + " does not belong to current user");
           throw new NoExistDataException("The email: " + newAndOldEmail.getOldVal() + " does not belong to current user");
         }
       }
