@@ -42,3 +42,21 @@ d.	Если передан email, то фильтр по 100% сходству.
 5.	REST API
 6.	Дополнительные технологии (Redis, ElasticSearch и т.д.) на ваше усмотрение.
 7.	Фронтенд не нужен
+
+
+---
+Запуск
+---
+
+
+```bash
+$ git clone https://github.com/RadiantDelta/test-bank-app.git
+```
+Открыть проект в IDE
+
+Подключить БД
+ 
+Запустить 
+
+Swagger: http://localhost:8080/swagger-ui/index.html
+
