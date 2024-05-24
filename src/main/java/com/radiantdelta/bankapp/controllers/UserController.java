@@ -9,7 +9,6 @@ import com.radiantdelta.bankapp.dtos.UserDTO;
 import com.radiantdelta.bankapp.entities.Email;
 import com.radiantdelta.bankapp.entities.Phone;
 import com.radiantdelta.bankapp.entities.User;
-import com.radiantdelta.bankapp.exceptions.*;
 import com.radiantdelta.bankapp.exceptions.LastDataException;
 import com.radiantdelta.bankapp.exceptions.NoExistDataException;
 import com.radiantdelta.bankapp.exceptions.NoTargetUserException;
@@ -85,7 +84,7 @@ public class UserController {
   }
 
   @GetMapping("/users")
-  @Operation(summary = "My endpoint", security = @SecurityRequirement(name = "bearerAuth"))
+  @Operation(summary = "Get users", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<Map<String, Object>> getAllUsers(
           @RequestParam(required = false) String phone,
           @RequestParam(required = false) String email,
@@ -151,7 +150,7 @@ public class UserController {
 //http://localhost:8080/swagger-ui/index.html
 
   @PostMapping("/add-email")
-  @Operation(summary = "My endpoint", security = @SecurityRequirement(name = "bearerAuth"))
+  @Operation(summary = "Add email", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<String> addEmail(@RequestHeader("Authorization") @NotEmpty(message="Bearer token cannot be empty") String bearerToken,
                                          @RequestBody @NotEmpty(message="Input newEmail cannot be empty") String newEmail) {
     if (bearerToken != null) {
@@ -182,7 +181,7 @@ public class UserController {
   }
 
   @PostMapping("/add-phone")
-  @Operation(summary = "My endpoint", security = @SecurityRequirement(name = "bearerAuth"))
+  @Operation(summary = "Add phone", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<String> addPhone(@RequestHeader("Authorization") @NotEmpty(message="Bearer token cannot be empty") String bearerToken,
                                          @RequestBody @NotEmpty(message="Input newPhone cannot be empty") String newPhone) {
     if (bearerToken != null) {
@@ -215,7 +214,7 @@ public class UserController {
 
   @Transactional
   @DeleteMapping("/phone/{phone}")
-  @Operation(summary = "My endpoint", security = @SecurityRequirement(name = "bearerAuth"))
+  @Operation(summary = "Delete phone", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<String> deletePhone(@RequestHeader("Authorization") @NotEmpty(message="Bearer token cannot be empty") String bearerToken,
                                             @PathVariable @NotEmpty(message="Deleting Phone cannot be empty") String phone) {
     if (bearerToken != null) {
@@ -247,7 +246,7 @@ public class UserController {
 
   @Transactional
   @DeleteMapping("/email/{email}")
-  @Operation(summary = "My endpoint", security = @SecurityRequirement(name = "bearerAuth"))
+  @Operation(summary = "Delete email", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<String> deleteEmail(@RequestHeader("Authorization") @NotEmpty(message="Bearer token cannot be empty") String bearerToken,
                                             @PathVariable @NotEmpty(message="Deleting Email cannot be empty") String email) {
     if (bearerToken != null) {
@@ -279,7 +278,7 @@ public class UserController {
 
   @Transactional
   @PutMapping("/change-phone")
-  @Operation(summary = "My endpoint", security = @SecurityRequirement(name = "bearerAuth"))
+  @Operation(summary = "Change phone", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<String> changePhone(@RequestHeader("Authorization") @NotEmpty(message="Bearer token cannot be empty") String bearerToken,
                                             @RequestBody @Valid ChangeDTO newAndOldPhone) {
     if (bearerToken != null) {
@@ -320,7 +319,7 @@ public class UserController {
 
   @Transactional
   @PutMapping("/change-email")
-  @Operation(summary = "My endpoint", security = @SecurityRequirement(name = "bearerAuth"))
+  @Operation(summary = "Change email", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<String> changeEmail(@RequestHeader("Authorization") @NotEmpty(message="Bearer token cannot be empty") String bearerToken,
                                             @RequestBody @Valid ChangeDTO newAndOldEmail) {
     if (bearerToken != null) {

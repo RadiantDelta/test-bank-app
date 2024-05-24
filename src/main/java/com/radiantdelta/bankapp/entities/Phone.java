@@ -2,7 +2,6 @@ package com.radiantdelta.bankapp.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 
 

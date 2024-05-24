@@ -2,15 +2,12 @@ package com.radiantdelta.bankapp.component;
 
 import com.radiantdelta.bankapp.entities.User;
 import com.radiantdelta.bankapp.repositories.ScheduleRepository;
-import com.radiantdelta.bankapp.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.beans.Transient;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 

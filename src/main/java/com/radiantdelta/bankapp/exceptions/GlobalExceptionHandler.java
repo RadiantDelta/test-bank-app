@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
     List<String> errors = List.of(ex.getMessage());
 
     return ResponseEntity
-            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .status(HttpStatus.FORBIDDEN)
             .body(errorsMap(errors));
   }
 
@@ -89,6 +89,16 @@ public class GlobalExceptionHandler {
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(errorsMap(errors));
   }
+
+  @ExceptionHandler(NoTargetUserException.class)
+  public final ResponseEntity<Map<String, List<String>>> handleNoTargetUserExceptions(NoTargetUserException ex) {
+    List<String> errors = List.of(ex.getMessage());
+
+    return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(errorsMap(errors));
+  }
+
 
   @ExceptionHandler(InvalidJwtException.class)
   public ResponseEntity<Map<String, List<String>>> handleJwtErrors(InvalidJwtException ex) {

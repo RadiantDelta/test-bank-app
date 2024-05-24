@@ -2,7 +2,6 @@ package com.radiantdelta.bankapp.dtos;
 
 import com.radiantdelta.bankapp.entities.Email;
 import com.radiantdelta.bankapp.entities.Phone;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -85,5 +84,15 @@ public class SignUpDto{
 
     public void setAmount(float amount) {
         this.amount = amount;
+    }
+
+    public SignUpDto(String login, String password, List<Phone> phoneList, List<Email> emailList, float amount, Date dob, String fio) {
+        this.login = login;
+        this.password = password;
+        this.phoneList = phoneList;
+        this.emailList = emailList;
+        this.amount = amount;
+        this.dob = dob;
+        this.fio = fio;
     }
 }

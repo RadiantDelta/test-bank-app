@@ -1,5 +1,6 @@
 package com.radiantdelta.bankapp.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class AuthController {
   private TokenProvider tokenService;
 
   @PostMapping("/signup")
+  @Operation(summary = "Sign up")
   public ResponseEntity<?> signUp(@RequestBody @Valid SignUpDto data) {
     service.signUp(data);
     log.info("Signup happened");
@@ -41,6 +43,7 @@ public class AuthController {
   }
 
   @PostMapping("/signin")
+  @Operation(summary = "Sign in")
   public ResponseEntity<?> signIn(@RequestBody @Valid SignInDto data) {
     var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
 
