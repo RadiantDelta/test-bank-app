@@ -1,21 +1,22 @@
 package com.radiantdelta.bankapp.services;
 
+import com.radiantdelta.bankapp.config.auth.TokenProvider;
 import com.radiantdelta.bankapp.entities.Phone;
 import com.radiantdelta.bankapp.repositories.EmailRepository;
 import com.radiantdelta.bankapp.repositories.PhoneRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.radiantdelta.bankapp.dtos.SignUpDto;
 import com.radiantdelta.bankapp.entities.User;
 import com.radiantdelta.bankapp.entities.Email;
 import com.radiantdelta.bankapp.exceptions.InvalidJwtException;
 import com.radiantdelta.bankapp.repositories.UserRepository;
-
 import java.util.ArrayList;
 
 
@@ -29,10 +30,12 @@ public class AuthService implements UserDetailsService {
   EmailRepository emailRepository;
   @Autowired
   PhoneRepository phoneRepository;
+  @Autowired
+  private TokenProvider tokenService;
+
   @Override
   public UserDetails loadUserByUsername(String username) {
-    var user = repository.findByLogin(username);
-    return user;
+    return repository.findByLogin(username);
   }
 
   public UserDetails signUp(SignUpDto data) throws InvalidJwtException {
@@ -75,4 +78,14 @@ public class AuthService implements UserDetailsService {
     return repository.saveAndFlush(newUser);
 
   }
+
+  public HttpHeaders signIn(Authentication authUser) {
+
+    var accessToken = tokenService.generateAccessToken((User) authUser.getPrincipal());
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Authorization", "Bearer " +accessToken);
+    return headers;
+  }
+
+
 }
