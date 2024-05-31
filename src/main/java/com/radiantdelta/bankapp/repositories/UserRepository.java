@@ -8,11 +8,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.radiantdelta.bankapp.entities.User;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
+
 @Transactional(readOnly = true)
+@Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
   Page<User> findAll(Pageable pageable);
 

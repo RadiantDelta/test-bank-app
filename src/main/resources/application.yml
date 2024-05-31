@@ -2,7 +2,7 @@
 security:
   jwt:
     token:
-      secret-key: ${JWT_SECRET}
+      secret-key: yoursecret
 
 server:
   port: 8080

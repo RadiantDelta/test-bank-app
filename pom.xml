@@ -85,11 +85,7 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
+
 
 	</dependencies>
 
@@ -98,18 +94,45 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
-					<image>
-						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
-					</image>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+					<finalName>ServiceCreate</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					<archive>
+						<manifest>
+							<mainClass>com.svt.optimoo.App</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>Main</mainClass>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
