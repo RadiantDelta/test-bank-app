@@ -1,6 +1,6 @@
 package com.radiantdelta.bankapp.repositories;
 
-import com.radiantdelta.bankapp.entities.Phone;
+import com.radiantdelta.bankapp.domain.Phone;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

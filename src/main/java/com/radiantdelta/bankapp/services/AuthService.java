@@ -1,7 +1,7 @@
 package com.radiantdelta.bankapp.services;
 
 import com.radiantdelta.bankapp.config.auth.TokenProvider;
-import com.radiantdelta.bankapp.entities.Phone;
+import com.radiantdelta.bankapp.domain.Phone;
 import com.radiantdelta.bankapp.repositories.EmailRepository;
 import com.radiantdelta.bankapp.repositories.PhoneRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.radiantdelta.bankapp.dtos.SignUpDto;
-import com.radiantdelta.bankapp.entities.User;
-import com.radiantdelta.bankapp.entities.Email;
+import com.radiantdelta.bankapp.domain.User;
+import com.radiantdelta.bankapp.domain.Email;
 import com.radiantdelta.bankapp.exceptions.InvalidJwtException;
 import com.radiantdelta.bankapp.repositories.UserRepository;
 import java.util.ArrayList;

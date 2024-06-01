@@ -1,6 +1,6 @@
 package com.radiantdelta.bankapp.repositories;
 
-import com.radiantdelta.bankapp.entities.Email;
+import com.radiantdelta.bankapp.domain.Email;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
