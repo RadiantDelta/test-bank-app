@@ -1,7 +1,7 @@
 package com.radiantdelta.bankapp.dtos;
-import com.radiantdelta.bankapp.entities.Email;
-import com.radiantdelta.bankapp.entities.Phone;
-import com.radiantdelta.bankapp.entities.User;
+import com.radiantdelta.bankapp.domain.Email;
+import com.radiantdelta.bankapp.domain.Phone;
+import com.radiantdelta.bankapp.domain.User;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -44,9 +44,6 @@ public class UserDTO {
     public void setFio(String fio) {
         this.fio = fio;
     }
-
-
-
 
     public Date getDob() {
         return dob;

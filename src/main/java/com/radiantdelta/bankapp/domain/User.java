@@ -1,28 +1,17 @@
-package com.radiantdelta.bankapp.entities;
+package com.radiantdelta.bankapp.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import com.radiantdelta.bankapp.enums.UserRole;
-
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
-@Table()
 @Entity(name = "users")
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
 
   @Id
@@ -71,6 +60,17 @@ public void addEmailToList(Email email) {this.emailList.add(email);}
 
   public void addPhoneToList(Phone phone) {this.phoneList.add(phone);}
 
+  public String getLogin() {
+    return login;
+  }
+
+  public Date getDob() {
+    return dob;
+  }
+
+  public String getFio() {
+    return fio;
+  }
 
   public float getAmount() {
     return amount;
@@ -87,6 +87,7 @@ public void addEmailToList(Email email) {this.emailList.add(email);}
   public List<Phone> getPhoneList() { return phoneList; }
   public void setPhoneList(List<Phone> phoneList) { this.phoneList = phoneList; }
 
+  public User() {}
   public User(String login, String password, List<Phone> phoneList, List<Email> emailList, float amount, Date dob, String fio, float startAmount/*, UserRole role*/) {
     this.login = login;
     this.password = password;
@@ -108,8 +109,26 @@ public void addEmailToList(Email email) {this.emailList.add(email);}
   }
 
   @Override
+  public String getPassword() {
+    return password;
+  }
+
+  @Override
   public String getUsername() {
     return login;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    User user = (User) o;
+    return Objects.equals(id, user.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
   }
 
   @Override

@@ -1,4 +1,4 @@
-package com.radiantdelta.bankapp.entities;
+package com.radiantdelta.bankapp.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -6,7 +6,6 @@ import org.springframework.validation.annotation.Validated;
 
 
 @Validated
-@Table()
 @Entity(name = "emails")
 public class Email {
 

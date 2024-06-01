@@ -1,7 +1,7 @@
 package com.radiantdelta.bankapp.dtos;
 
-import com.radiantdelta.bankapp.entities.Email;
-import com.radiantdelta.bankapp.entities.Phone;
+import com.radiantdelta.bankapp.domain.Email;
+import com.radiantdelta.bankapp.domain.Phone;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

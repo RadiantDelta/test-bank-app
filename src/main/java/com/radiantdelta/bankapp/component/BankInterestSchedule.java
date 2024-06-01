@@ -1,6 +1,6 @@
 package com.radiantdelta.bankapp.component;
 
-import com.radiantdelta.bankapp.entities.User;
+import com.radiantdelta.bankapp.domain.User;
 import com.radiantdelta.bankapp.repositories.ScheduleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
